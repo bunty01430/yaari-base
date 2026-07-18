@@ -16,31 +16,29 @@ Node is pinned through `.node-version`. This project does not use Workers, Pages
 
 ## Environment variables
 
-Configure these separately under **Settings → Environment variables** for Production and Preview:
+Configure these under **Settings → Environment variables**. Production uses the published release values; Preview should leave both download URLs empty unless test APKs are intentionally available.
 
-| Variable | Production | Preview |
-| --- | --- | --- |
-| `VITE_APK_DOWNLOAD_URL` | Direct GitHub Release asset URL | Empty unless a test APK is approved |
-| `VITE_APK_VERSION` | `1.0.0` | Same as production |
-| `VITE_APK_SIZE` | `129.5 MB` | Same as production |
-| `VITE_APK_SHA256` | Release checksum | Same as production |
-| `VITE_SUPPORT_EMAIL` | Public support address | Optional |
+| Variable | Production value |
+| --- | --- |
+| `VITE_APK_ARM64_DOWNLOAD_URL` | `https://github.com/bunty01430/yaari-base/releases/download/v1.0.1/yaari24-v1.0.1-arm64-v8a.apk` |
+| `VITE_APK_ARM64_SIZE` | `46.0 MB` |
+| `VITE_APK_ARM64_SHA256` | `2D57FEEF653594F37117236FE4D3A35ACD0285FFE4873A09BAB92813A370E1F8` |
+| `VITE_APK_ARMV7_DOWNLOAD_URL` | `https://github.com/bunty01430/yaari-base/releases/download/v1.0.1/yaari24-v1.0.1-armeabi-v7a.apk` |
+| `VITE_APK_ARMV7_SIZE` | `39.0 MB` |
+| `VITE_APK_ARMV7_SHA256` | `2DFA0232D10F718ADEE8B7DD46C76A663B3267DD1F1DD277A3D67DFB0D73FC88` |
+| `VITE_APK_VERSION` | `1.0.1` |
+| `VITE_SUPPORT_EMAIL` | Public support address, optional |
 
-Environment values are embedded at build time. Trigger a new Pages deployment after changing them.
+The old `VITE_APK_DOWNLOAD_URL`, `VITE_APK_SIZE`, and `VITE_APK_SHA256` variables are accepted temporarily as an ARM64 fallback. Remove them from Cloudflare after the architecture-specific variables are active. Environment values are embedded at build time, so trigger a new deployment after changes.
 
 ## APK hosting with GitHub Releases
 
-Do not commit the APK to the repository. Publish it as a binary asset on a versioned GitHub Release in `bunty01430/yaari-base`.
+Do not commit APK binaries to Git. Publish architecture-labelled assets on a versioned GitHub Release:
 
-For version `1.0.0`:
+- `yaari24-v1.0.1-arm64-v8a.apk` for most modern Android phones.
+- `yaari24-v1.0.1-armeabi-v7a.apk` for older 32-bit Android phones.
 
-1. Create tag and release `v1.0.0`.
-2. Upload the APK as `yaari24-v1.0.0.apk`.
-3. Set `VITE_APK_DOWNLOAD_URL` to `https://github.com/bunty01430/yaari-base/releases/download/v1.0.0/yaari24-v1.0.0.apk`.
-4. Keep the release asset filename and tag versioned rather than replacing an old binary.
-5. Publish the uploaded file's SHA-256 value through `VITE_APK_SHA256`.
-
-GitHub serves the release asset as a direct HTTPS download. The website source and APK release can therefore live under the same GitHub repository without adding the APK to Git history.
+Version `1.0.1` starts the permanent production signing identity. Users who installed the debug-signed `v1.0.0` release must uninstall it before installing `v1.0.1`. Uninstalling clears local app data; server-backed accounts remain available after sign-in.
 
 ## Domain setup
 
@@ -51,10 +49,8 @@ GitHub serves the release asset as a direct HTTPS download. The website source a
 
 ## Verification
 
-After deployment:
-
 1. Open and refresh every public route directly.
 2. Verify `/robots.txt`, `/sitemap.xml`, and response security headers.
-3. Confirm APK buttons use the GitHub Release asset URL.
+3. Confirm both APK buttons use the matching GitHub Release assets.
 4. Confirm Google Play remains a non-clickable “Coming soon” control.
 5. Check production and preview deployments at mobile, tablet, and desktop widths.

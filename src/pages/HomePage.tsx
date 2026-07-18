@@ -41,7 +41,7 @@ export default function HomePage() {
           <h1><m.span initial={{ y: 70, rotate: 2 }} animate={{ y: 0, rotate: 0 }} transition={{ duration: .7 }}>Your people.</m.span><m.span initial={{ y: 70, rotate: -2 }} animate={{ y: 0, rotate: 0 }} transition={{ duration: .7, delay: .08 }}>Your rooms.</m.span><m.span className="gradient-text" initial={{ y: 70 }} animate={{ y: 0 }} transition={{ duration: .7, delay: .16 }}>Your vibe.</m.span></h1>
           <m.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: .45 }}>Friends online. Rooms buzzing. DMs that never feel dry. Yaari24 puts every conversation in one vibrant place.</m.p>
           <m.div className="hero-actions" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: .55 }}><DownloadButton /><PlayStoreBadge /></m.div>
-          <div className="hero-meta"><span>Android</span><i /><span>v{APK.version}</span><i /><span>{APK.size}</span></div>
+          <div className="hero-meta"><span>Android</span><i /><span>v{APK.version}</span><i /><span>{APK.arm64.size}</span></div>
           <Link className="hero-text-link" to="/features">See what’s inside <ArrowGlyph /></Link>
         </div>
         <div className="hero-collage" aria-label="Yaari24 app and mascot collage">
@@ -71,5 +71,3 @@ export default function HomePage() {
     <section className="section container"><DownloadCta /></section>
   </PageTransition>;
 }
-
-

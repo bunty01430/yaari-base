@@ -26,14 +26,17 @@ The site runs without `.env.local`. In that state every APK button is disabled a
 ## Release configuration
 
 ```dotenv
-VITE_APK_DOWNLOAD_URL=https://github.com/bunty01430/yaari-base/releases/download/v1.0.0/yaari24-v1.0.0.apk
-VITE_APK_VERSION=1.0.0
-VITE_APK_SIZE=129.5 MB
-VITE_APK_SHA256=55152CF5A9A26667682069F7B6AB2186C0C16633AFD06DA9F33ECDC69DDC7EA1
+VITE_APK_ARM64_DOWNLOAD_URL=https://github.com/bunty01430/yaari-base/releases/download/v1.0.1/yaari24-v1.0.1-arm64-v8a.apk
+VITE_APK_ARM64_SIZE=46.0 MB
+VITE_APK_ARM64_SHA256=2D57FEEF653594F37117236FE4D3A35ACD0285FFE4873A09BAB92813A370E1F8
+VITE_APK_ARMV7_DOWNLOAD_URL=https://github.com/bunty01430/yaari-base/releases/download/v1.0.1/yaari24-v1.0.1-armeabi-v7a.apk
+VITE_APK_ARMV7_SIZE=39.0 MB
+VITE_APK_ARMV7_SHA256=2DFA0232D10F718ADEE8B7DD46C76A663B3267DD1F1DD277A3D67DFB0D73FC88
+VITE_APK_VERSION=1.0.1
 VITE_SUPPORT_EMAIL=support@yaari24.online
 ```
 
-The APK URL must point to the versioned asset attached to the matching GitHub Release. Keep APK binaries out of Git history. The support email is optional. Google Play is centrally marked `comingSoon` in `src/config.ts`.
+Both APK URLs must point to the architecture-labelled assets attached to the matching GitHub Release. ARM64 is the primary download and the legacy single-APK variables remain a temporary ARM64 fallback. Keep APK binaries out of Git history. The support email is optional. Google Play is centrally marked `comingSoon` in `src/config.ts`.
 
 ## Cloudflare Pages
 
