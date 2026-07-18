@@ -1,9 +1,6 @@
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
-  readonly VITE_APK_DOWNLOAD_URL?: string;
-  readonly VITE_APK_SIZE?: string;
-  readonly VITE_APK_SHA256?: string;
   readonly VITE_APK_ARM64_DOWNLOAD_URL?: string;
   readonly VITE_APK_ARM64_SIZE?: string;
   readonly VITE_APK_ARM64_SHA256?: string;

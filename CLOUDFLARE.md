@@ -29,7 +29,7 @@ Configure these under **Settings → Environment variables**. Production uses th
 | `VITE_APK_VERSION` | `1.0.1` |
 | `VITE_SUPPORT_EMAIL` | Public support address, optional |
 
-The old `VITE_APK_DOWNLOAD_URL`, `VITE_APK_SIZE`, and `VITE_APK_SHA256` variables are accepted temporarily as an ARM64 fallback. Remove them from Cloudflare after the architecture-specific variables are active. Environment values are embedded at build time, so trigger a new deployment after changes.
+Delete the old `VITE_APK_DOWNLOAD_URL`, `VITE_APK_SIZE`, and `VITE_APK_SHA256` variables from Cloudflare. Environment values are embedded at build time, so trigger a new deployment after changes. The current v1.0.1 GitHub URLs are also built in as safe defaults.
 
 ## APK hosting with GitHub Releases
 

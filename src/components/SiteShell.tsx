@@ -8,7 +8,7 @@ const nav = [
   { to: '/features', label: 'Features' },
   { to: '/safety', label: 'Safety' },
   { to: '/about', label: 'About' },
-  { to: '/download', label: 'Download' },
+  { to: '/download', label: 'APK options' },
 ];
 
 function ThemeIcon({ theme }: { theme: Theme }) {
@@ -64,7 +64,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
       <div className="container footer-grid">
         <div className="footer-brand"><img src="/assets/brand/yaari24-logo.webp" alt="Yaari24" width="170" height="103" /><p>Your people. Your rooms. Your vibe.</p><span>Android v{APK.version}</span></div>
         <div><strong>Explore</strong><Link to="/features">Features</Link><Link to="/safety">Safety</Link><Link to="/about">About</Link></div>
-        <div><strong>Get Yaari24</strong><Link to="/download">Download APK</Link><span>Google Play — Coming soon</span></div>
+        <div><strong>Get Yaari24</strong><Link to="/download">Choose 64-bit / 32-bit</Link><span>Google Play — Coming soon</span></div>
         <div><strong>Legal</strong><Link to="/privacy">Privacy</Link><Link to="/terms">Terms</Link></div>
       </div>
       <div className="container footer-bottom"><span>© 2026 Yaari24. Made with yaari in India.</span><span>yaari24.online</span></div>
