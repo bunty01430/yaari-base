@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#030817" />
+    <meta name="description" content="Meet friends, join live rooms, chat privately, and share gifts on Yaari24. Download the Android APK directly." />
+    <meta name="robots" content="index, follow" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Yaari24 — Your people. Your rooms. Your vibe." />
+    <meta property="og:description" content="Friends, live rooms, direct messages, and gifts in one vibrant community." />
+    <meta property="og:image" content="/assets/brand/yaari24-icon.webp" />
+    <meta property="og:url" content="https://yaari24.online/" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="canonical" href="https://yaari24.online/" />
+    <link rel="icon" type="image/webp" href="/assets/brand/yaari24-icon.webp" />
+    <link rel="apple-touch-icon" href="/assets/brand/yaari24-icon.webp" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <script>
+      (() => {
+        const saved = localStorage.getItem('yaari24-site-theme');
+        const theme = saved === 'light' || saved === 'dark'
+          ? saved
+          : matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+        document.documentElement.dataset.theme = theme;
+      })();
+    </script>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Yaari24",
+        "applicationCategory": "SocialNetworkingApplication",
+        "operatingSystem": "Android",
+        "softwareVersion": "1.0.0",
+        "description": "A social community for friends, live rooms, direct messages, and virtual gifts.",
+        "url": "https://yaari24.online/"
+      }
+    </script>
+    <title>Yaari24 — Your people. Your rooms. Your vibe.</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
+

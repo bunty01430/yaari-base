@@ -1,0 +1,17 @@
+{
+  "name": "Yaari24",
+  "short_name": "Yaari24",
+  "description": "Friends, rooms, direct messages, and gifts in one vibrant community.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#030817",
+  "theme_color": "#1A6EFF",
+  "icons": [
+    {
+      "src": "/assets/brand/yaari24-icon.webp",
+      "sizes": "1024x1024",
+      "type": "image/webp",
+      "purpose": "any maskable"
+    }
+  ]
+}
