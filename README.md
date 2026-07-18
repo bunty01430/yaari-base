@@ -26,14 +26,14 @@ The site runs without `.env.local`. In that state every APK button is disabled a
 ## Release configuration
 
 ```dotenv
-VITE_APK_DOWNLOAD_URL=https://downloads.yaari24.online/yaari24-v1.0.0.apk
+VITE_APK_DOWNLOAD_URL=https://github.com/bunty01430/yaari-base/releases/download/v1.0.0/yaari24-v1.0.0.apk
 VITE_APK_VERSION=1.0.0
 VITE_APK_SIZE=129.5 MB
 VITE_APK_SHA256=55152CF5A9A26667682069F7B6AB2186C0C16633AFD06DA9F33ECDC69DDC7EA1
 VITE_SUPPORT_EMAIL=support@yaari24.online
 ```
 
-The APK URL must be a direct HTTPS file URL. The support email is optional. Google Play is centrally marked `comingSoon` in `src/config.ts`.
+The APK URL must point to the versioned asset attached to the matching GitHub Release. Keep APK binaries out of Git history. The support email is optional. Google Play is centrally marked `comingSoon` in `src/config.ts`.
 
 ## Cloudflare Pages
 
@@ -45,7 +45,7 @@ Use these Git deployment settings:
 - Build command: `npm run build`
 - Build output directory: `dist`
 
-The project pins Node 22, includes Cloudflare `_redirects` and `_headers`, and does not require Workers or Pages Functions. See [CLOUDFLARE.md](./CLOUDFLARE.md) for environment variables, R2 APK hosting, domain setup, and the deployment checklist.
+The project pins Node 22, includes Cloudflare `_redirects` and `_headers`, and does not require Workers or Pages Functions. See [CLOUDFLARE.md](./CLOUDFLARE.md) for environment variables, GitHub Release APK hosting, domain setup, and the deployment checklist.
 
 ## Build and preview
 
@@ -66,4 +66,3 @@ The deployable output is written to `dist/`.
 - Local Poppins fonts: `public/assets/fonts`
 
 Below-fold images are lazy-loaded, product pages are route-split, theme preference persists locally, and animation respects `prefers-reduced-motion`.
-

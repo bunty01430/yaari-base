@@ -20,7 +20,7 @@ Configure these separately under **Settings → Environment variables** for Prod
 
 | Variable | Production | Preview |
 | --- | --- | --- |
-| `VITE_APK_DOWNLOAD_URL` | Official direct HTTPS APK URL | Empty unless a test APK is approved |
+| `VITE_APK_DOWNLOAD_URL` | Direct GitHub Release asset URL | Empty unless a test APK is approved |
 | `VITE_APK_VERSION` | `1.0.0` | Same as production |
 | `VITE_APK_SIZE` | `129.5 MB` | Same as production |
 | `VITE_APK_SHA256` | Release checksum | Same as production |
@@ -28,16 +28,19 @@ Configure these separately under **Settings → Environment variables** for Prod
 
 Environment values are embedded at build time. Trigger a new Pages deployment after changing them.
 
-## APK hosting with R2
+## APK hosting with GitHub Releases
 
-Do not commit the APK to Git. Upload it to an R2 bucket and expose it through a custom domain such as `downloads.yaari24.online`.
+Do not commit the APK to the repository. Publish it as a binary asset on a versioned GitHub Release in `bunty01430/yaari-base`.
 
-Use:
+For version `1.0.0`:
 
-- Content-Type: `application/vnd.android.package-archive`
-- Content-Disposition: `attachment; filename="yaari24-v1.0.0.apk"`
-- A versioned object name rather than overwriting an existing release
-- The published file's SHA-256 value in `VITE_APK_SHA256`
+1. Create tag and release `v1.0.0`.
+2. Upload the APK as `yaari24-v1.0.0.apk`.
+3. Set `VITE_APK_DOWNLOAD_URL` to `https://github.com/bunty01430/yaari-base/releases/download/v1.0.0/yaari24-v1.0.0.apk`.
+4. Keep the release asset filename and tag versioned rather than replacing an old binary.
+5. Publish the uploaded file's SHA-256 value through `VITE_APK_SHA256`.
+
+GitHub serves the release asset as a direct HTTPS download. The website source and APK release can therefore live under the same GitHub repository without adding the APK to Git history.
 
 ## Domain setup
 
@@ -52,6 +55,6 @@ After deployment:
 
 1. Open and refresh every public route directly.
 2. Verify `/robots.txt`, `/sitemap.xml`, and response security headers.
-3. Confirm APK buttons use the R2/custom-domain URL.
+3. Confirm APK buttons use the GitHub Release asset URL.
 4. Confirm Google Play remains a non-clickable “Coming soon” control.
 5. Check production and preview deployments at mobile, tablet, and desktop widths.
