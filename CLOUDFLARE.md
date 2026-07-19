@@ -20,23 +20,23 @@ Configure these under **Settings → Environment variables**. Production uses th
 
 | Variable | Production value |
 | --- | --- |
-| `VITE_APK_ARM64_DOWNLOAD_URL` | `https://github.com/bunty01430/yaari-base/releases/download/v1.0.1/yaari24-v1.0.1-arm64-v8a.apk` |
+| `VITE_APK_ARM64_DOWNLOAD_URL` | `https://github.com/bunty01430/yaari-base/releases/download/v1.0.2/yaari24-v1.0.2-arm64-v8a.apk` |
 | `VITE_APK_ARM64_SIZE` | `46.0 MB` |
-| `VITE_APK_ARM64_SHA256` | `2D57FEEF653594F37117236FE4D3A35ACD0285FFE4873A09BAB92813A370E1F8` |
-| `VITE_APK_ARMV7_DOWNLOAD_URL` | `https://github.com/bunty01430/yaari-base/releases/download/v1.0.1/yaari24-v1.0.1-armeabi-v7a.apk` |
+| `VITE_APK_ARM64_SHA256` | `F51D203B5ADC86F15AB7FE784DE7FCD3F7D8A1644758B05655E1FD0B235E3026` |
+| `VITE_APK_ARMV7_DOWNLOAD_URL` | `https://github.com/bunty01430/yaari-base/releases/download/v1.0.2/yaari24-v1.0.2-armeabi-v7a.apk` |
 | `VITE_APK_ARMV7_SIZE` | `39.0 MB` |
-| `VITE_APK_ARMV7_SHA256` | `2DFA0232D10F718ADEE8B7DD46C76A663B3267DD1F1DD277A3D67DFB0D73FC88` |
-| `VITE_APK_VERSION` | `1.0.1` |
+| `VITE_APK_ARMV7_SHA256` | `4AF1A81200C974F33E9F116F1964E7D94391C5E0A95CEA77BB092615B5930019` |
+| `VITE_APK_VERSION` | `1.0.2` |
 | `VITE_SUPPORT_EMAIL` | Public support address, optional |
 
-Delete the old `VITE_APK_DOWNLOAD_URL`, `VITE_APK_SIZE`, and `VITE_APK_SHA256` variables from Cloudflare. Environment values are embedded at build time, so trigger a new deployment after changes. The current v1.0.1 GitHub URLs are also built in as safe defaults.
+Delete the old `VITE_APK_DOWNLOAD_URL`, `VITE_APK_SIZE`, and `VITE_APK_SHA256` variables from Cloudflare. Environment values are embedded at build time, so trigger a new deployment after changes. The current v1.0.2 GitHub URLs are also built in as safe defaults.
 
 ## APK hosting with GitHub Releases
 
 Do not commit APK binaries to Git. Publish architecture-labelled assets on a versioned GitHub Release:
 
-- `yaari24-v1.0.1-arm64-v8a.apk` for most modern Android phones.
-- `yaari24-v1.0.1-armeabi-v7a.apk` for older 32-bit Android phones.
+- `yaari24-v1.0.2-arm64-v8a.apk` for most modern Android phones.
+- `yaari24-v1.0.2-armeabi-v7a.apk` for older 32-bit Android phones.
 
 Version `1.0.1` starts the permanent production signing identity. Users who installed the debug-signed `v1.0.0` release must uninstall it before installing `v1.0.1`. Uninstalling clears local app data; server-backed accounts remain available after sign-in.
 
