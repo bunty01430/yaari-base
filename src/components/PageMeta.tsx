@@ -7,6 +7,7 @@ export function PageMeta({ title, description, noIndex = false }: { title: strin
 
   useEffect(() => {
     const canonicalUrl = new URL(location.pathname, BRAND.siteUrl).toString();
+    const shareImage = new URL('/assets/brand/yaari24-icon.webp', BRAND.siteUrl).toString();
     document.title = title;
 
     const setMeta = (selector: string, attribute: 'name' | 'property', key: string, content: string) => {
@@ -24,6 +25,11 @@ export function PageMeta({ title, description, noIndex = false }: { title: strin
     setMeta('meta[property="og:title"]', 'property', 'og:title', title);
     setMeta('meta[property="og:description"]', 'property', 'og:description', description);
     setMeta('meta[property="og:url"]', 'property', 'og:url', canonicalUrl);
+    setMeta('meta[property="og:image"]', 'property', 'og:image', shareImage);
+    setMeta('meta[property="og:image:alt"]', 'property', 'og:image:alt', 'Yaari24 app icon');
+    setMeta('meta[name="twitter:title"]', 'name', 'twitter:title', title);
+    setMeta('meta[name="twitter:description"]', 'name', 'twitter:description', description);
+    setMeta('meta[name="twitter:image"]', 'name', 'twitter:image', shareImage);
 
     let canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]');
     if (!canonical) {

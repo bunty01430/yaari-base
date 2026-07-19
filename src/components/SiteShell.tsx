@@ -1,4 +1,4 @@
-import { type ReactNode, useEffect, useState } from 'react';
+import { type ReactNode, useEffect, useRef, useState } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
 import { DownloadButton } from './Actions';
 import { APK } from '../config';
@@ -8,7 +8,7 @@ const nav = [
   { to: '/features', label: 'Features' },
   { to: '/safety', label: 'Safety' },
   { to: '/about', label: 'About' },
-  { to: '/download', label: 'APK options' },
+  { to: '/download', label: 'Download' },
 ];
 
 function ThemeIcon({ theme }: { theme: Theme }) {
@@ -21,6 +21,10 @@ export function SiteShell({ children }: { children: ReactNode }) {
   const [theme, setTheme] = useState<Theme>(() => document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light');
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const menuButtonRef = useRef<HTMLButtonElement>(null);
+  const mobileMenuRef = useRef<HTMLDivElement>(null);
+  const firstMobileLinkRef = useRef<HTMLAnchorElement>(null);
+  const wasMenuOpen = useRef(false);
   const location = useLocation();
 
   useEffect(() => {
@@ -41,6 +45,39 @@ export function SiteShell({ children }: { children: ReactNode }) {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
+  useEffect(() => {
+    if (!menuOpen) {
+      if (wasMenuOpen.current) menuButtonRef.current?.focus();
+      wasMenuOpen.current = false;
+      return;
+    }
+
+    wasMenuOpen.current = true;
+    const oldOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    const focusTimer = window.setTimeout(() => firstMobileLinkRef.current?.focus(), 50);
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        setMenuOpen(false);
+        return;
+      }
+      if (event.key !== 'Tab') return;
+      const controls = [menuButtonRef.current, ...Array.from(mobileMenuRef.current?.querySelectorAll<HTMLAnchorElement>('a') ?? [])].filter((item): item is HTMLButtonElement | HTMLAnchorElement => item !== null);
+      if (!controls.length) return;
+      const first = controls[0]!;
+      const last = controls[controls.length - 1]!;
+      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+      if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => {
+      window.clearTimeout(focusTimer);
+      document.body.style.overflow = oldOverflow;
+      window.removeEventListener('keydown', onKeyDown);
+    };
+  }, [menuOpen]);
+
   return <>
     <a className="skip-link" href="#main">Skip to content</a>
     <header className={'site-header ' + (scrolled ? 'scrolled' : '')}>
@@ -51,12 +88,12 @@ export function SiteShell({ children }: { children: ReactNode }) {
         </nav>
         <div className="nav-actions">
           <button className="theme-toggle" type="button" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-label={'Switch to ' + (theme === 'dark' ? 'light' : 'dark') + ' theme'}><ThemeIcon theme={theme} /></button>
-          <DownloadButton compact />
-          <button className="menu-button" type="button" aria-expanded={menuOpen} aria-controls="mobile-menu" onClick={() => setMenuOpen((open) => !open)} aria-label={menuOpen ? 'Close menu' : 'Open menu'}><span /><span /></button>
+          <DownloadButton compact destination="download-page" label="Download" />
+          <button ref={menuButtonRef} className="menu-button" type="button" aria-expanded={menuOpen} aria-controls="mobile-menu" onClick={() => setMenuOpen((open) => !open)} aria-label={menuOpen ? 'Close menu' : 'Open menu'}><span /><span /></button>
         </div>
       </div>
-      <div id="mobile-menu" className={'mobile-menu ' + (menuOpen ? 'open' : '')} aria-hidden={!menuOpen}>
-        <nav aria-label="Mobile navigation">{nav.map((item, index) => <NavLink key={item.to} to={item.to}><span>0{index + 1}</span>{item.label}</NavLink>)}</nav>
+      <div ref={mobileMenuRef} id="mobile-menu" className={'mobile-menu ' + (menuOpen ? 'open' : '')} aria-hidden={!menuOpen} inert={!menuOpen}>
+        <nav aria-label="Mobile navigation">{nav.map((item, index) => <NavLink ref={index === 0 ? firstMobileLinkRef : undefined} key={item.to} to={item.to} onClick={() => setMenuOpen(false)}><span>0{index + 1}</span>{item.label}</NavLink>)}</nav>
       </div>
     </header>
     <main id="main">{children}</main>
@@ -64,7 +101,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
       <div className="container footer-grid">
         <div className="footer-brand"><img src="/assets/brand/yaari24-logo.webp" alt="Yaari24" width="170" height="103" /><p>Your people. Your rooms. Your vibe.</p><span>Android v{APK.version}</span></div>
         <div><strong>Explore</strong><Link to="/features">Features</Link><Link to="/safety">Safety</Link><Link to="/about">About</Link></div>
-        <div><strong>Get Yaari24</strong><Link to="/download">Choose 64-bit / 32-bit</Link><span>Google Play — Coming soon</span></div>
+        <div><strong>Get Yaari24</strong><Link to="/download">Download</Link><span>Google Play — Coming soon</span></div>
         <div><strong>Legal</strong><Link to="/privacy">Privacy</Link><Link to="/terms">Terms</Link></div>
       </div>
       <div className="container footer-bottom"><span>© 2026 Yaari24. Made with yaari in India.</span><span>yaari24.online</span></div>
