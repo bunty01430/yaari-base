@@ -15,7 +15,7 @@ export default function NotFoundPage() {
         <div className="not-found-code">404</div>
         <div className="not-found-mascot">
           <img
-            src="/assets/mascots/community-mascots.png"
+            src="/assets/mascots/community-mascots.webp"
             alt="Yaari24 mascots looking for the missing page"
           />
         </div>
