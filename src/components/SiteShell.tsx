@@ -1,24 +1,41 @@
-import { type ReactNode, useEffect, useRef, useState } from 'react';
-import { NavLink, Link, useLocation } from 'react-router-dom';
-import { DownloadButton } from './Actions';
-import { APK } from '../config';
+import { type ReactNode, useEffect, useRef, useState } from "react";
+import { NavLink, Link, useLocation } from "react-router-dom";
+import { DownloadButton } from "./Actions";
+import { APK } from "../config";
 
-type Theme = 'light' | 'dark';
+type Theme = "light" | "dark";
 const nav = [
-  { to: '/features', label: 'Features' },
-  { to: '/safety', label: 'Safety' },
-  { to: '/about', label: 'About' },
-  { to: '/download', label: 'Download' },
+  { to: "/features", label: "Features" },
+  { to: "/safety", label: "Safety" },
+  { to: "/about", label: "About" },
+  { to: "/download", label: "Download" },
 ];
 
 function ThemeIcon({ theme }: { theme: Theme }) {
-  return theme === 'dark'
-    ? <svg aria-hidden="true" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4" fill="currentColor" /><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" stroke="currentColor" strokeWidth="2" strokeLinecap="round" /></svg>
-    : <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M20.2 15.3A8.5 8.5 0 0 1 8.7 3.8 8.5 8.5 0 1 0 20.2 15.3Z" fill="currentColor" /></svg>;
+  return theme === "dark" ? (
+    <svg aria-hidden="true" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="4" fill="currentColor" />
+      <path
+        d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"
+        stroke="currentColor"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+    </svg>
+  ) : (
+    <svg aria-hidden="true" viewBox="0 0 24 24">
+      <path
+        d="M20.2 15.3A8.5 8.5 0 0 1 8.7 3.8 8.5 8.5 0 1 0 20.2 15.3Z"
+        fill="currentColor"
+      />
+    </svg>
+  );
 }
 
 export function SiteShell({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>(() => document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light');
+  const [theme, setTheme] = useState<Theme>(() =>
+    document.documentElement.dataset.theme === "dark" ? "dark" : "light",
+  );
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement>(null);
@@ -29,20 +46,22 @@ export function SiteShell({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     setMenuOpen(false);
-    window.scrollTo({ top: 0, behavior: 'instant' });
+    window.scrollTo({ top: 0, behavior: "instant" });
   }, [location.pathname]);
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme;
-    localStorage.setItem('yaari24-site-theme', theme);
-    document.querySelector<HTMLMetaElement>('meta[name="theme-color"]')?.setAttribute('content', theme === 'dark' ? '#030817' : '#fff8ee');
+    localStorage.setItem("yaari24-site-theme", theme);
+    document
+      .querySelector<HTMLMetaElement>('meta[name="theme-color"]')
+      ?.setAttribute("content", theme === "dark" ? "#030817" : "#fff8ee");
   }, [theme]);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
     onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   useEffect(() => {
@@ -54,57 +73,192 @@ export function SiteShell({ children }: { children: ReactNode }) {
 
     wasMenuOpen.current = true;
     const oldOverflow = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    const focusTimer = window.setTimeout(() => firstMobileLinkRef.current?.focus(), 50);
+    document.body.style.overflow = "hidden";
+    const focusTimer = window.setTimeout(
+      () => firstMobileLinkRef.current?.focus(),
+      50,
+    );
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
+      if (event.key === "Escape") {
         event.preventDefault();
         setMenuOpen(false);
         return;
       }
-      if (event.key !== 'Tab') return;
-      const controls = [menuButtonRef.current, ...Array.from(mobileMenuRef.current?.querySelectorAll<HTMLAnchorElement>('a') ?? [])].filter((item): item is HTMLButtonElement | HTMLAnchorElement => item !== null);
+      if (event.key !== "Tab") return;
+      const controls = [
+        menuButtonRef.current,
+        ...Array.from(
+          mobileMenuRef.current?.querySelectorAll<HTMLAnchorElement>("a") ?? [],
+        ),
+      ].filter(
+        (item): item is HTMLButtonElement | HTMLAnchorElement => item !== null,
+      );
       if (!controls.length) return;
       const first = controls[0]!;
       const last = controls[controls.length - 1]!;
-      if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
-      if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      }
+      if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
     };
-    window.addEventListener('keydown', onKeyDown);
+    window.addEventListener("keydown", onKeyDown);
     return () => {
       window.clearTimeout(focusTimer);
       document.body.style.overflow = oldOverflow;
-      window.removeEventListener('keydown', onKeyDown);
+      window.removeEventListener("keydown", onKeyDown);
     };
   }, [menuOpen]);
 
-  return <>
-    <a className="skip-link" href="#main">Skip to content</a>
-    <header className={'site-header ' + (location.pathname === '/' ? 'over-home ' : 'over-color ') + (scrolled ? 'scrolled' : '')}>
-      <div className="nav-shell container">
-        <Link className="brand-link" to="/" aria-label="Yaari24 home"><img src="/assets/brand/yaari24-logo.webp" alt="Yaari24" width="170" height="103" /></Link>
-        <nav className="desktop-nav" aria-label="Main navigation">
-          {nav.map((item) => <NavLink key={item.to} to={item.to} className={({ isActive }) => isActive ? 'active' : undefined}>{item.label}</NavLink>)}
-        </nav>
-        <div className="nav-actions">
-          <button className="theme-toggle" type="button" onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')} aria-label={'Switch to ' + (theme === 'dark' ? 'light' : 'dark') + ' theme'}><ThemeIcon theme={theme} /></button>
-          <DownloadButton compact destination="download-page" label="Download" />
-          <button ref={menuButtonRef} className="menu-button" type="button" aria-expanded={menuOpen} aria-controls="mobile-menu" onClick={() => setMenuOpen((open) => !open)} aria-label={menuOpen ? 'Close menu' : 'Open menu'}><span /><span /></button>
+  return (
+    <>
+      <a className="skip-link" href="#main">
+        Skip to content
+      </a>
+      <header
+        className={
+          "site-header " +
+          (location.pathname === "/" ? "over-home " : "over-color ") +
+          (scrolled ? "scrolled" : "")
+        }
+      >
+        <div className="nav-shell container">
+          <Link className="brand-link" to="/" aria-label="Yaari24 home">
+            <img
+              src="/assets/brand/yaari24-logo.webp"
+              alt="Yaari24"
+              width="170"
+              height="103"
+            />
+          </Link>
+          <nav className="desktop-nav" aria-label="Main navigation">
+            {nav.map((item) => (
+              <NavLink
+                key={item.to}
+                to={item.to}
+                className={({ isActive }) => (isActive ? "active" : undefined)}
+              >
+                {item.label}
+              </NavLink>
+            ))}
+          </nav>
+          <div className="nav-actions">
+            <button
+              className="theme-toggle"
+              type="button"
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              aria-label={
+                "Switch to " + (theme === "dark" ? "light" : "dark") + " theme"
+              }
+            >
+              <ThemeIcon theme={theme} />
+            </button>
+            <DownloadButton
+              compact
+              destination="download-page"
+              label="Download"
+            />
+            <button
+              ref={menuButtonRef}
+              className="menu-button"
+              type="button"
+              aria-expanded={menuOpen}
+              aria-controls="mobile-menu"
+              onClick={() => setMenuOpen((open) => !open)}
+              aria-label={menuOpen ? "Close menu" : "Open menu"}
+            >
+              <span />
+              <span />
+            </button>
+          </div>
         </div>
-      </div>
-      <div ref={mobileMenuRef} id="mobile-menu" className={'mobile-menu ' + (menuOpen ? 'open' : '')} aria-hidden={!menuOpen} inert={!menuOpen}>
-        <nav aria-label="Mobile navigation">{nav.map((item, index) => <NavLink ref={index === 0 ? firstMobileLinkRef : undefined} key={item.to} to={item.to} onClick={() => setMenuOpen(false)}><span>0{index + 1}</span>{item.label}</NavLink>)}</nav>
-      </div>
-    </header>
-    <main id="main">{children}</main>
-    <footer className="site-footer">
-      <div className="container footer-grid">
-        <div className="footer-brand"><img src="/assets/brand/yaari24-logo.webp" alt="Yaari24" width="170" height="103" /><p>Your people. Your rooms. Your vibe.</p><span>Android v{APK.version}</span></div>
-        <div><strong>Explore</strong><Link to="/features">Features</Link><Link to="/safety">Safety</Link><Link to="/about">About</Link></div>
-        <div><strong>Get Yaari24</strong><Link to="/download">Download</Link><span>Google Play — Coming soon</span></div>
-        <div><strong>Legal</strong><Link to="/privacy">Privacy</Link><Link to="/terms">Terms</Link></div>
-      </div>
-      <div className="container footer-bottom"><span>© 2026 Yaari24. Made with yaari in India.</span><span>yaari24.online</span></div>
-    </footer>
-  </>;
+        <div
+          ref={mobileMenuRef}
+          id="mobile-menu"
+          className={"mobile-menu " + (menuOpen ? "open" : "")}
+          aria-hidden={!menuOpen}
+          inert={!menuOpen}
+        >
+          <nav aria-label="Mobile navigation">
+            {nav.map((item, index) => {
+              if (item.to === "/download") {
+                if (location.pathname === "/download") {
+                  return (
+                    <a
+                      key={item.to}
+                      href={APK.arm64.downloadUrl}
+                      onClick={() => setMenuOpen(false)}
+                    >
+                      <span>0{index + 1}</span>
+                      {item.label}
+                    </a>
+                  );
+                }
+
+                return (
+                  <NavLink
+                    key={item.to}
+                    to="/download"
+                    onClick={() => setMenuOpen(false)}
+                  >
+                    <span>0{index + 1}</span>
+                    {item.label}
+                  </NavLink>
+                );
+              }
+              return (
+                <NavLink
+                  ref={index === 0 ? firstMobileLinkRef : undefined}
+                  key={item.to}
+                  to={item.to}
+                  onClick={() => setMenuOpen(false)}
+                >
+                  <span>0{index + 1}</span>
+                  {item.label}
+                </NavLink>
+              );
+            })}
+          </nav>
+        </div>
+      </header>
+      <main id="main">{children}</main>
+      <footer className="site-footer">
+        <div className="container footer-grid">
+          <div className="footer-brand">
+            <img
+              src="/assets/brand/yaari24-logo.webp"
+              alt="Yaari24"
+              width="170"
+              height="103"
+            />
+            <p>Your people. Your rooms. Your vibe.</p>
+            <span>Android v{APK.version}</span>
+          </div>
+          <div>
+            <strong>Explore</strong>
+            <Link to="/features">Features</Link>
+            <Link to="/safety">Safety</Link>
+            <Link to="/about">About</Link>
+          </div>
+          <div>
+            <strong>Get Yaari24</strong>
+            <Link to="/download">Download</Link>
+            <span>Google Play — Coming soon</span>
+          </div>
+          <div>
+            <strong>Legal</strong>
+            <Link to="/privacy">Privacy</Link>
+            <Link to="/terms">Terms</Link>
+          </div>
+        </div>
+        <div className="container footer-bottom">
+          <span>© 2026 Yaari24. Made with yaari in India.</span>
+          <span>yaari24.online</span>
+        </div>
+      </footer>
+    </>
+  );
 }
