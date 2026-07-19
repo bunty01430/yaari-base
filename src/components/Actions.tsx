@@ -1,6 +1,6 @@
 import { type PointerEvent, useRef } from 'react';
 import { m, useMotionValue, useReducedMotion, useSpring } from 'motion/react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { APK, type ApkArchitecture } from '../config';
 
 const MotionLink = m.create(Link);
@@ -25,6 +25,7 @@ export function ArrowGlyph() {
 }
 
 export function DownloadButton(props: DownloadButtonProps) {
+  const location = useLocation();
   const { compact = false, inverse = false, label } = props;
   const ref = useRef<HTMLAnchorElement>(null);
   const reduced = useReducedMotion();
@@ -45,7 +46,29 @@ export function DownloadButton(props: DownloadButtonProps) {
   const interactionProps = { ref, style: { x, y }, className: classes, onPointerMove: onMove, onPointerLeave: reset, onBlur: reset };
 
   if (props.destination === 'download-page') {
-    return <MotionLink {...interactionProps} to="/download" aria-label="Open Yaari24 download options"><DownloadGlyph /><span>{label || 'Download'}</span></MotionLink>;
+    if (location.pathname === '/download') {
+      return (
+        <m.a
+          {...interactionProps}
+          href={APK.arm64.downloadUrl}
+          aria-label={`Download Yaari24 version ${APK.version} 64-bit Android APK`}
+        >
+          <DownloadGlyph />
+          <span>{label || 'Download'}</span>
+        </m.a>
+      );
+    }
+
+    return (
+      <MotionLink
+        {...interactionProps}
+        to="/download"
+        aria-label="Open Yaari24 download options"
+      >
+        <DownloadGlyph />
+        <span>{label || 'Download'}</span>
+      </MotionLink>
+    );
   }
 
   if (!release.downloadUrl) {
