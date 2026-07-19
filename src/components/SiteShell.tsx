@@ -80,7 +80,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
 
   return <>
     <a className="skip-link" href="#main">Skip to content</a>
-    <header className={'site-header ' + (scrolled ? 'scrolled' : '')}>
+    <header className={'site-header ' + (location.pathname === '/' ? 'over-home ' : 'over-color ') + (scrolled ? 'scrolled' : '')}>
       <div className="nav-shell container">
         <Link className="brand-link" to="/" aria-label="Yaari24 home"><img src="/assets/brand/yaari24-logo.webp" alt="Yaari24" width="170" height="103" /></Link>
         <nav className="desktop-nav" aria-label="Main navigation">
